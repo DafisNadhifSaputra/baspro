@@ -31,32 +31,32 @@ class SinglyLinkedList:
             current = current.next
             count += 1
 
-    def find_node_by_judul(self, judul):
+    def find_node_by_title(self, title):
         current = self.head
         while current:
-            if current.data.judul.lower() == judul.lower():
+            if current.data.title.lower() == title.lower():
                 return current
             current = current.next
         return None
 
-    def delete_node_by_judul(self, judul):
+    def delete_node_by_title(self, title):
         if self.is_empty():
             print("List kosong, tidak ada yang bisa dihapus.")
             return False
-        if self.head.data.judul.lower() == judul.lower():
+        if self.head.data.title.lower() == title.lower():
             self.head = self.head.next
-            print(f"Catatan '{judul}' berhasil dihapus.")
+            print(f"Catatan '{title}' berhasil dihapus.")
             return True
         current = self.head
         prev = None
-        while current and current.data.judul.lower() != judul.lower():
+        while current and current.data.title.lower() != title.lower():
             prev = current
             current = current.next
         if current is None:
-            print(f"Catatan '{judul}' tidak ditemukan.")
+            print(f"Catatan '{title}' tidak ditemukan.")
             return False
         prev.next = current.next
-        print(f"Catatan '{judul}' berhasil dihapus.")
+        print(f"Catatan '{title}' berhasil dihapus.")
         return True
 
     def get_length(self):
@@ -67,7 +67,7 @@ class SinglyLinkedList:
             current = current.next
         return count
 
-    def insertion_sort_by_judul(self):
+    def insertion_sort_by_title(self):
         if self.is_empty() or self.head.next is None:
             return
         sorted_list_head = None
@@ -75,25 +75,25 @@ class SinglyLinkedList:
         while current:
             next_node_to_process = current.next
             if sorted_list_head is None or \
-               current.data.judul.lower() <= sorted_list_head.data.judul.lower():
+               current.data.title.lower() <= sorted_list_head.data.title.lower():
                 current.next = sorted_list_head
                 sorted_list_head = current
             else:
                 search_ptr = sorted_list_head
                 while search_ptr.next is not None and \
-                      search_ptr.next.data.judul.lower() < current.data.judul.lower():
+                      search_ptr.next.data.title.lower() < current.data.title.lower():
                     search_ptr = search_ptr.next
                 current.next = search_ptr.next
                 search_ptr.next = current
             current = next_node_to_process
         self.head = sorted_list_head
-        print("Catatan telah diurutkan berdasarkan judul menggunakan Insertion Sort.")
+        print("Catatan telah diurutkan berdasarkan title menggunakan Insertion Sort.")
 
     def linear_search_by_title(self, title_to_search):
         current = self.head
         position = 0
         while current:
-            if current.data.judul.lower() == title_to_search.lower():
+            if current.data.title.lower() == title_to_search.lower():
                 print(f"Catatan '{title_to_search}' ditemukan pada posisi {position + 1}.")
                 print(current.data)
                 return current.data

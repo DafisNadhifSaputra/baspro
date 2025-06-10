@@ -7,7 +7,7 @@ from struktur_data import SinglyLinkedList, Node
 class NotebookGUI:
     def __init__(self, root):
         self.root = root
-        self.root.judul("Aplikasi Notebook SDA - GUI Version")
+        self.root.title("Aplikasi Notebook SDA - GUI Version")
         self.root.geometry("1000x700")
         self.root.configure(bg='#f0f0f0')
         
@@ -41,10 +41,10 @@ class NotebookGUI:
         self.root.grid_rowconfigure(0, weight=1)
         self.root.grid_columnconfigure(0, weight=1)
         
-        # judul
-        judul_label = ttk.Label(main_frame, text="Aplikasi Notebook SDA", 
+        # title
+        title_label = ttk.Label(main_frame, text="Aplikasi Notebook SDA", 
                                font=('Arial', 16, 'bold'))
-        judul_label.grid(row=0, column=0, columnspan=3, pady=(0, 20))
+        title_label.grid(row=0, column=0, columnspan=3, pady=(0, 20))
         
         # Left panel - Notebook list
         left_frame = ttk.LabelFrame(main_frame, text="Daftar Notebook", padding="10")
@@ -66,11 +66,11 @@ class NotebookGUI:
         middle_frame.grid(row=1, column=1, sticky=(tk.W, tk.E, tk.N, tk.S), padx=5)
         
         # Notes treeview
-        self.notes_tree = ttk.Treeview(middle_frame, columns=('judul', 'tanggal'), 
+        self.notes_tree = ttk.Treeview(middle_frame, columns=('title', 'tanggal'), 
                                       show='headings', height=15)
-        self.notes_tree.heading('judul', text='Judul')
+        self.notes_tree.heading('title', text='title')
         self.notes_tree.heading('tanggal', text='Tanggal')
-        self.notes_tree.column('judul', width=200)
+        self.notes_tree.column('title', width=200)
         self.notes_tree.column('tanggal', width=150)
         self.notes_tree.grid(row=0, column=0, columnspan=3, sticky=(tk.W, tk.E, tk.N, tk.S))
         self.notes_tree.bind('<<TreeviewSelect>>', self.on_note_select)
@@ -90,8 +90,8 @@ class NotebookGUI:
         sort_frame = ttk.Frame(middle_frame)
         sort_frame.grid(row=2, column=0, columnspan=3, pady=(5, 0), sticky=tk.W+tk.E)
         
-        ttk.Button(sort_frame, text="Urutkan: Judul", 
-                  command=self.sort_by_judul).pack(side=tk.LEFT, padx=(0, 5))
+        ttk.Button(sort_frame, text="Urutkan: title", 
+                  command=self.sort_by_title).pack(side=tk.LEFT, padx=(0, 5))
         ttk.Button(sort_frame, text="Urutkan: Tanggal", 
                   command=self.sort_by_tanggal).pack(side=tk.LEFT, padx=5)
         ttk.Button(sort_frame, text="Cari Catatan", 
@@ -103,12 +103,12 @@ class NotebookGUI:
         right_frame = ttk.LabelFrame(main_frame, text="Isi Catatan", padding="10")
         right_frame.grid(row=1, column=2, sticky=(tk.W, tk.E, tk.N, tk.S), padx=(10, 0))
         
-        # Note judul
-        self.note_judul_var = tk.StringVar()
-        ttk.Label(right_frame, text="Judul:").grid(row=0, column=0, sticky=tk.W)
-        judul_entry = ttk.Entry(right_frame, textvariable=self.note_judul_var, 
+        # Note title
+        self.note_title_var = tk.StringVar()
+        ttk.Label(right_frame, text="title:").grid(row=0, column=0, sticky=tk.W)
+        title_entry = ttk.Entry(right_frame, textvariable=self.note_title_var, 
                                state='readonly', width=40)
-        judul_entry.grid(row=0, column=1, sticky=(tk.W, tk.E), pady=(0, 5))
+        title_entry.grid(row=0, column=1, sticky=(tk.W, tk.E), pady=(0, 5))
         
         # Note tanggal
         self.note_tanggal_var = tk.StringVar()
@@ -157,7 +157,7 @@ class NotebookGUI:
         current = self.current_notebook.notes_list.head
         while current:
             note = current.data
-            self.notes_tree.insert('', tk.END, values=(note.judul, note.created_tanggal))
+            self.notes_tree.insert('', tk.END, values=(note.title, note.created_tanggal))
             current = current.next
     
     def on_notebook_select(self, event):
@@ -178,19 +178,19 @@ class NotebookGUI:
         selection = self.notes_tree.selection()
         if selection and self.current_notebook:
             item = self.notes_tree.item(selection[0])
-            note_judul = item['values'][0]
+            note_title = item['values'][0]
             
             # Find the note
             current = self.current_notebook.notes_list.head
             while current:
-                if current.data.judul == note_judul:
+                if current.data.title == note_title:
                     self.display_note(current.data)
                     break
                 current = current.next
     
     def display_note(self, note):
         """Menampilkan isi catatan di panel kanan."""
-        self.note_judul_var.set(note.judul)
+        self.note_title_var.set(note.title)
         self.note_tanggal_var.set(note.created_tanggal)
         
         self.note_content.config(state='normal')
@@ -200,7 +200,7 @@ class NotebookGUI:
     
     def clear_note_display(self):
         """Membersihkan tampilan catatan."""
-        self.note_judul_var.set("")
+        self.note_title_var.set("")
         self.note_tanggal_var.set("")
         self.note_content.config(state='normal')
         self.note_content.delete(1.0, tk.END)
@@ -250,21 +250,21 @@ class NotebookGUI:
         
         dialog = NoteDialog(self.root, "Tambah Catatan Baru")
         if dialog.result:
-            judul, content = dialog.result
+            title, content = dialog.result
             
-            # Check if judul already exists
-            if self.current_notebook.notes_list.find_node_by_judul(judul):
-                messagebox.showerror("Error", "Catatan dengan judul tersebut sudah ada.")
+            # Check if title already exists
+            if self.current_notebook.notes_list.find_node_by_title(title):
+                messagebox.showerror("Error", "Catatan dengan title tersebut sudah ada.")
                 return
             
             # Add note
             from notebook.catatan import Note
-            new_note = Note(judul, content)
+            new_note = Note(title, content)
             self.current_notebook.notes_list.appends(new_note)
             
             self.refresh_notes_list()
             self.save_data_ke_json()
-            messagebox.showinfo("Sukses", f"Catatan '{judul}' berhasil ditambahkan.")
+            messagebox.showinfo("Sukses", f"Catatan '{title}' berhasil ditambahkan.")
     
     def edit_note(self):
         """Mengedit catatan yang dipilih."""
@@ -274,26 +274,26 @@ class NotebookGUI:
             return
         
         item = self.notes_tree.item(selection[0])
-        note_judul = item['values'][0]
+        note_title = item['values'][0]
         
         # Find the note
         current = self.current_notebook.notes_list.head
         while current:
-            if current.data.judul == note_judul:
+            if current.data.title == note_title:
                 dialog = NoteDialog(self.root, "Edit Catatan", 
-                                  current.data.judul, current.data.content)
+                                  current.data.title, current.data.content)
                 if dialog.result:
-                    new_judul, new_content = dialog.result
+                    new_title, new_content = dialog.result
                     
-                    # Check if new judul conflicts with existing notes
-                    if new_judul != current.data.judul:
-                        existing = self.current_notebook.notes_list.find_node_by_judul(new_judul)
+                    # Check if new title conflicts with existing notes
+                    if new_title != current.data.title:
+                        existing = self.current_notebook.notes_list.find_node_by_title(new_title)
                         if existing:
-                            messagebox.showerror("Error", "Judul sudah digunakan oleh catatan lain.")
+                            messagebox.showerror("Error", "title sudah digunakan oleh catatan lain.")
                             return
                     
                     # Update note
-                    current.data.update_judul(new_judul)
+                    current.data.update_title(new_title)
                     current.data.update_content(new_content)
                     
                     self.refresh_notes_list()
@@ -310,19 +310,19 @@ class NotebookGUI:
             return
         
         item = self.notes_tree.item(selection[0])
-        note_judul = item['values'][0]
+        note_title = item['values'][0]
         
         result = messagebox.askyesno("Konfirmasi", 
-                                   f"Apakah Anda yakin ingin menghapus catatan '{note_judul}'?")
+                                   f"Apakah Anda yakin ingin menghapus catatan '{note_title}'?")
         if result:
-            self.current_notebook.notes_list.delete_node_by_judul(note_judul)
+            self.current_notebook.notes_list.delete_node_by_title(note_title)
             self.refresh_notes_list()
             self.clear_note_display()
             self.save_data_ke_json()
-            messagebox.showinfo("Sukses", f"Catatan '{note_judul}' berhasil dihapus.")
+            messagebox.showinfo("Sukses", f"Catatan '{note_title}' berhasil dihapus.")
     
-    def sort_by_judul(self):
-        """Mengurutkan catatan berdasarkan judul."""
+    def sort_by_title(self):
+        """Mengurutkan catatan berdasarkan title."""
         if not self.current_notebook:
             messagebox.showwarning("Peringatan", "Pilih notebook terlebih dahulu.")
             return
@@ -330,7 +330,7 @@ class NotebookGUI:
         self.current_notebook.sort_notes()
         self.refresh_notes_list()
         self.save_data_ke_json()
-        messagebox.showinfo("Sukses", "Catatan berhasil diurutkan berdasarkan judul.")
+        messagebox.showinfo("Sukses", "Catatan berhasil diurutkan berdasarkan title.")
     
     def sort_by_tanggal(self):
         """Mengurutkan catatan berdasarkan tanggal."""
@@ -344,25 +344,25 @@ class NotebookGUI:
         messagebox.showinfo("Sukses", "Catatan berhasil diurutkan berdasarkan tanggal.")
     
     def search_note(self):
-        """Mencari catatan berdasarkan judul."""
+        """Mencari catatan berdasarkan title."""
         if not self.current_notebook:
             messagebox.showwarning("Peringatan", "Pilih notebook terlebih dahulu.")
             return
         
-        judul = simpledialog.askstring("Cari Catatan", "Masukkan judul catatan yang dicari:")
-        if judul:
-            node = self.current_notebook.notes_list.find_node_by_judul(judul)
+        title = simpledialog.askstring("Cari Catatan", "Masukkan title catatan yang dicari:")
+        if title:
+            node = self.current_notebook.notes_list.find_node_by_title(title)
             if node:
                 # Select the note in treeview
                 for item in self.notes_tree.get_children():
-                    if self.notes_tree.item(item)['values'][0] == node.data.judul:
+                    if self.notes_tree.item(item)['values'][0] == node.data.title:
                         self.notes_tree.selection_set(item)
                         self.notes_tree.focus(item)
                         self.display_note(node.data)
                         break
-                messagebox.showinfo("Ditemukan", f"Catatan '{judul}' ditemukan dan dipilih.")
+                messagebox.showinfo("Ditemukan", f"Catatan '{title}' ditemukan dan dipilih.")
             else:
-                messagebox.showinfo("Tidak Ditemukan", f"Catatan '{judul}' tidak ditemukan.")
+                messagebox.showinfo("Tidak Ditemukan", f"Catatan '{title}' tidak ditemukan.")
     
     def export_notes(self):
         """Mengekspor catatan ke file TXT."""
@@ -405,12 +405,12 @@ class NotebookGUI:
             messagebox.showerror("Error", f"Terjadi kesalahan saat memuat data: {str(e)}")
 
 class NoteDialog:
-    def __init__(self, parent, judul, note_judul="", note_content=""):
+    def __init__(self, parent, title, note_title="", note_content=""):
         self.result = None
         
         # Create dialog
         self.dialog = tk.Toplevel(parent)
-        self.dialog.judul(judul)
+        self.dialog.title(title)
         self.dialog.geometry("600x400")
         self.dialog.transient(parent)
         self.dialog.grab_set()
@@ -422,11 +422,11 @@ class NoteDialog:
         main_frame = ttk.Frame(self.dialog, padding="20")
         main_frame.pack(fill=tk.BOTH, expand=True)
         
-        # judul
-        ttk.Label(main_frame, text="Judul:").pack(anchor=tk.W)
-        self.judul_entry = ttk.Entry(main_frame, width=60)
-        self.judul_entry.pack(fill=tk.X, pady=(0, 10))
-        self.judul_entry.insert(0, note_judul)
+        # title
+        ttk.Label(main_frame, text="title:").pack(anchor=tk.W)
+        self.title_entry = ttk.Entry(main_frame, width=60)
+        self.title_entry.pack(fill=tk.X, pady=(0, 10))
+        self.title_entry.insert(0, note_title)
         
         # Content
         ttk.Label(main_frame, text="Konten:").pack(anchor=tk.W)
@@ -441,8 +441,8 @@ class NoteDialog:
         ttk.Button(button_frame, text="Simpan", command=self.save).pack(side=tk.RIGHT, padx=(10, 0))
         ttk.Button(button_frame, text="Batal", command=self.cancel).pack(side=tk.RIGHT)
         
-        # Focus on judul entry
-        self.judul_entry.focus()
+        # Focus on title entry
+        self.title_entry.focus()
         
         # Bind Enter key to save
         self.dialog.bind('<Return>', lambda e: self.save())
@@ -452,18 +452,18 @@ class NoteDialog:
         self.dialog.wait_window()
     
     def save(self):
-        judul = self.judul_entry.get().strip()
+        title = self.title_entry.get().strip()
         content = self.content_text.get(1.0, tk.END).strip()
         
-        if not judul:
-            messagebox.showerror("Error", "Judul tidak boleh kosong.")
+        if not title:
+            messagebox.showerror("Error", "title tidak boleh kosong.")
             return
         
         if not content:
             messagebox.showerror("Error", "Konten tidak boleh kosong.")
             return
         
-        self.result = (judul, content)
+        self.result = (title, content)
         self.dialog.destroy()
     
     def cancel(self):

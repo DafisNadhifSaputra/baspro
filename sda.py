@@ -123,9 +123,9 @@ class NotebookApplication:
             print("2. Lihat Semua Catatan")
             print("3. Edit Catatan")
             print("4. Hapus Catatan")
-            print("5. Urutkan Catatan (Berdasarkan Judul)")
+            print("5. Urutkan Catatan (Berdasarkan title)")
             print("6. Urutkan Catatan (Berdasarkan Tanggal)")
-            print("7. Cari Catatan (Berdasarkan Judul)")
+            print("7. Cari Catatan (Berdasarkan title)")
             print("8. Ekspor Catatan ke File Teks (.txt)")
             print("9. Kembali ke Menu Utama")
             choice = input("Pilihan: ")
@@ -143,7 +143,7 @@ class NotebookApplication:
                 current_notebook.delete_note()
                 self.save_data_ke_json() # Simpan setelah menghapus catatan
             elif choice == '5':
-                current_notebook.sort_notes() # Urutkan berdasarkan judul
+                current_notebook.sort_notes() # Urutkan berdasarkan title
                 self.save_data_ke_json() # Simpan setelah mengurutkan
             elif choice == '6':
                 if current_notebook:

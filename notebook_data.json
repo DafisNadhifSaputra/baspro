@@ -1,7 +1,13 @@
 {
     "aljabar abstrak": {
         "name": "Aljabar Abstrak",
-        "notes": []
+        "notes": [
+            {
+                "title": "mahesa",
+                "content": "wicaksono",
+                "created_tanggal": "2025-06-10 21:16:52"
+            }
+        ]
     },
     "persamaan diferensial": {
         "name": "Persamaan Diferensial",
