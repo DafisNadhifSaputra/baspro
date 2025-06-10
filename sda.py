@@ -10,13 +10,13 @@ class NotebookApplication:
         # self.data_file adalah nama file JSON tempat data notebook disimpan.
         self.data_file = data_file
         # Muat data yang ada dari file JSON saat aplikasi dimulai.
-        self.load_data_from_json()
+        self.load_data_dari_json()
         # Jika tidak ada notebook yang dimuat (misalnya, file tidak ada atau kosong),
         # inisialisasi dengan beberapa notebook default.
         if not self.notebooks:
-            self._initialize_default_notebooks()
+            self._inisialisasi_default_notebooks()
 
-    def _initialize_default_notebooks(self):
+    def _inisialisasi_default_notebooks(self):
         # Metode privat untuk membuat beberapa notebook default jika belum ada data.
         default_subjects = ["Aljabar Abstrak", "Persamaan Diferensial", "Analisis Real", "Struktur Data dan Algoritma"]
         for subject in default_subjects:
@@ -25,7 +25,7 @@ class NotebookApplication:
                  self.notebooks[subject.lower()] = Notebook(subject)
         print("Notebook default telah diinisialisasi (jika belum ada).")
 
-    def save_data_to_json(self):
+    def save_data_ke_json(self):
         # Menyimpan semua data notebook (self.notebooks) ke file JSON.
         data_to_save = {}
         # Iterasi melalui semua notebook dan konversi masing-masing menjadi dictionary
@@ -44,7 +44,7 @@ class NotebookApplication:
             # Tangani error umum lainnya
             print(f"Terjadi kesalahan tak terduga saat menyimpan data: {e}")
 
-    def load_data_from_json(self):
+    def load_data_dari_json(self):
         # Memuat data notebook dari file JSON.
         try:
             # Buka file dalam mode baca (read) dengan encoding utf-8
@@ -80,7 +80,7 @@ class NotebookApplication:
             self.notebooks[name.lower()] = Notebook(name)
             print(f"Notebook '{name}' berhasil ditambahkan.")
             # Simpan perubahan ke file JSON
-            self.save_data_to_json()
+            self.save_data_ke_json()
             
     def display_all_notebooks(self):
         # Menampilkan daftar semua notebook yang tersedia kepada pengguna.
@@ -133,21 +133,23 @@ class NotebookApplication:
             # Setiap operasi yang mengubah data (tambah, edit, hapus, urutkan) akan diikuti dengan penyimpanan data.
             if choice == '1':
                 current_notebook.add_note()
-                self.save_data_to_json() # Simpan setelah menambah catatan
+                self.save_data_ke_json() # Simpan setelah menambah catatan
             elif choice == '2':
                 current_notebook.view_notes()
             elif choice == '3':
                 current_notebook.edit_note()
-                self.save_data_to_json() # Simpan setelah mengedit catatan
+                self.save_data_ke_json() # Simpan setelah mengedit catatan
             elif choice == '4':
                 current_notebook.delete_note()
-                self.save_data_to_json() # Simpan setelah menghapus catatan
+                self.save_data_ke_json() # Simpan setelah menghapus catatan
             elif choice == '5':
                 current_notebook.sort_notes() # Urutkan berdasarkan judul
-                self.save_data_to_json() # Simpan setelah mengurutkan
+                self.save_data_ke_json() # Simpan setelah mengurutkan
             elif choice == '6':
-                current_notebook.sort_notes_by_date() # Urutkan berdasarkan tanggal
-                self.save_data_to_json() # Simpan setelah mengurutkan
+                if current_notebook:
+                    current_notebook.sort_notes_by_tanggal() # Urutkan berdasarkan tanggal
+                else:
+                    print("Tidak ada notebook yang sedang aktif.")
             elif choice == '7':
                 current_notebook.search_note()
             elif choice == '8':
@@ -180,7 +182,7 @@ class NotebookApplication:
                 self.display_all_notebooks()
             elif main_choice == '4':
                 # Pengguna memilih untuk keluar aplikasi
-                self.save_data_to_json() # Pastikan data terakhir disimpan sebelum keluar
+                self.save_data_ke_json() # Pastikan data terakhir disimpan sebelum keluar
                 print("Terima kasih telah menggunakan aplikasi ini!")
                 break # Keluar dari loop utama
             else:

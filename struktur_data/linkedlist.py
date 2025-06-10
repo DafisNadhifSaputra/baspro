@@ -89,17 +89,17 @@ class SinglyLinkedList:
         self.head = sorted_list_head
         print("Catatan telah diurutkan berdasarkan judul menggunakan Insertion Sort.")
 
-    def linear_search_by_judul(self, judul_to_search):
+    def linear_search_by_title(self, title_to_search):
         current = self.head
         position = 0
         while current:
-            if current.data.judul.lower() == judul_to_search.lower():
-                print(f"Catatan '{judul_to_search}' ditemukan pada posisi {position + 1}.")
+            if current.data.judul.lower() == title_to_search.lower():
+                print(f"Catatan '{title_to_search}' ditemukan pada posisi {position + 1}.")
                 print(current.data)
                 return current.data
             current = current.next
             position += 1
-        print(f"Catatan '{judul_to_search}' tidak ditemukan.")
+        print(f"Catatan '{title_to_search}' tidak ditemukan.")
         return None
 
     def to_list_of_dicts(self):
@@ -140,13 +140,13 @@ class SinglyLinkedList:
             next_node_to_process = current.next
             
             if sorted_list_head is None or \
-               current.data.created_date <= sorted_list_head.data.created_date:
+               current.data.created_tanggal <= sorted_list_head.data.created_tanggal:
                 current.next = sorted_list_head
                 sorted_list_head = current
             else:
                 search_ptr = sorted_list_head
                 while search_ptr.next is not None and \
-                      search_ptr.next.data.created_date < current.data.created_date:
+                      search_ptr.next.data.created_tanggal < current.data.created_tanggal:
                     search_ptr = search_ptr.next
                 current.next = search_ptr.next
                 search_ptr.next = current

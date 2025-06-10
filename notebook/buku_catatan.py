@@ -89,11 +89,11 @@ class Notebook:
 
     def sort_notes(self):
         # Mengurutkan catatan dalam buku catatan berdasarkan judul (A-Z).
-        self.notes_list.insertion_sort_by_judul()
+        self.notes_list.insertion_sort_by_title()
 
-    def sort_notes_by_date(self):
+    def sort_notes_by_tanggal(self):
         """Mengurutkan catatan berdasarkan tanggal pembuatan (dari yang terlama ke terbaru)."""
-        self.notes_list.insertion_sort_by_date()
+        self.notes_list.insertion_sort_by_tanggal()
 
     def search_note(self):
         # Mencari catatan dalam buku catatan berdasarkan judul.
@@ -134,10 +134,10 @@ class Notebook:
                 note_count = 1
                 # Iterasi melalui semua catatan dan tulis ke file
                 while current:
-                    f.write(f"--- Catatan {note_count} ---\n")
-                    f.write(f"Judul: {current.data.judul}\n")
-                    f.write(f"Tanggal: {current.data.created_date}\n") # Menambahkan tanggal ke ekspor
-                    f.write("Konten:\n")
+                    f.write(f"--- Catatan {note_count} ---\\n")
+                    f.write(f"Judul: {current.data.judul}\\n")
+                    f.write(f"Tanggal: {current.data.created_tanggal}\\n") # Menambahkan tanggal ke ekspor
+                    f.write("Konten:\\n")
                     f.write(current.data.content)
                     f.write("\n\n--------------------------\n\n")
                     current = current.next

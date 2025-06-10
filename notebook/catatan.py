@@ -1,48 +1,49 @@
 from datetime import datetime
 
 class Note:
-    """Mewakili satu catatan."""
-    def __init__(self, judul, content, created_date=None):
+    """Mewakili satu catatan dengan judul, konten, dan tanggal pembuatan."""
+    def __init__(self, judul, content, created_tanggal=None):
         # Inisialisasi objek Note dengan judul, konten, dan tanggal pembuatan.
         self.judul = judul  # Judul catatan
         self.content = content  # Isi atau konten catatan
         
-        # Jika tanggal pembuatan (created_date) disediakan, gunakan itu.
-        # Jika tidak, gunakan tanggal dan waktu saat ini sebagai default.
-        if created_date:
-            self.created_date = created_date
+        # Jika tanggal pembuatan (created_tanggal) disediakan, gunakan itu.
+        # Jika tidak, catat waktu saat ini sebagai tanggal pembuatan.
+        if created_tanggal:
+            self.created_tanggal = created_tanggal
         else:
-            # Format tanggal menjadi YYYY-MM-DD HH:MM:SS
-            self.created_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            # Format tanggal dan waktu: YYYY-MM-DD HH:MM:SS
+            self.created_tanggal = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def __str__(self):
-        # Mengembalikan representasi string dari objek Note, cocok untuk dicetak.
-        return f"Judul: {self.judul}\nTanggal: {self.created_date}\nKonten:\n{self.content}\n"
+        # Representasi string dari objek Note, berguna untuk pencetakan.
+        return f"Judul: {self.judul}\nTanggal: {self.created_tanggal}\nKonten:\n{self.content}\n"
 
     def update_content(self, new_content):
-        # Memperbarui konten catatan dengan konten baru.
+        # Memperbarui konten catatan.
         self.content = new_content
+        # Bisa ditambahkan logika untuk memperbarui tanggal modifikasi jika perlu
 
     def update_judul(self, new_judul):
-        # Memperbarui judul catatan dengan judul baru.
+        # Memperbarui judul catatan.
         self.judul = new_judul
+        # Bisa ditambahkan logika untuk memperbarui tanggal modifikasi jika perlu
 
     def to_dict(self):
-        """Mengkonversi objek Note menjadi dictionary.
-        Berguna untuk serialisasi data, misalnya saat menyimpan ke file JSON.
-        """
+        # Mengkonversi objek Note menjadi dictionary.
+        # Berguna untuk menyimpan data Note ke format JSON.
         return {
-            "judul": self.judul, 
+            "judul": self.judul,
             "content": self.content,
-            "created_date": self.created_date
+            "created_tanggal": self.created_tanggal
         }
 
     @staticmethod
     def from_dict(data):
-        """Membuat objek Note dari dictionary.
-        Ini adalah static method karena tidak bergantung pada instance Note tertentu untuk pembuatannya.
+        """Membuat objek Note dari dictionary (data dari JSON).
+        Ini adalah static method karena pembuatannya tidak bergantung pada instance Note tertentu.
         """
-        # Mengambil 'created_date' dari dictionary, default ke None jika tidak ada.
-        created_date = data.get("created_date", None)
-        # Membuat dan mengembalikan instance Note baru menggunakan data dari dictionary.
-        return Note(data["judul"], data["content"], created_date)
+        # Mengambil 'created_tanggal' dari dictionary, default ke None jika tidak ada.
+        created_tanggal = data.get("created_tanggal", None)
+        # Membuat dan mengembalikan instance Note baru.
+        return Note(data["judul"], data["content"], created_tanggal)

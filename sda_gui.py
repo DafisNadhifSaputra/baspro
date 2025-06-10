@@ -17,21 +17,21 @@ class NotebookGUI:
         self.current_notebook = None
         
         # Load data
-        self.load_data_from_json()
+        self.load_data_dari_json()
         if not self.notebooks:
-            self._initialize_default_notebooks()
+            self._inisialisasi_default_notebooks()
         
         # Create GUI
         self.create_widgets()
         self.refresh_notebook_list()
     
-    def _initialize_default_notebooks(self):
+    def _inisialisasi_default_notebooks(self):
         """Inisialisasi notebook default jika belum ada."""
         default_subjects = ["Aljabar Abstrak", "Persamaan Diferensial", "Analisis Real", "Struktur Data dan Algoritma"]
         for subject in default_subjects:
             if subject.lower() not in self.notebooks:
                 self.notebooks[subject.lower()] = Notebook(subject)
-        self.save_data_to_json()
+        self.save_data_ke_json()
     
     def create_widgets(self):
         """Membuat semua widget GUI."""
@@ -66,12 +66,12 @@ class NotebookGUI:
         middle_frame.grid(row=1, column=1, sticky=(tk.W, tk.E, tk.N, tk.S), padx=5)
         
         # Notes treeview
-        self.notes_tree = ttk.Treeview(middle_frame, columns=('judul', 'date'), 
+        self.notes_tree = ttk.Treeview(middle_frame, columns=('judul', 'tanggal'), 
                                       show='headings', height=15)
         self.notes_tree.heading('judul', text='Judul')
-        self.notes_tree.heading('date', text='Tanggal')
+        self.notes_tree.heading('tanggal', text='Tanggal')
         self.notes_tree.column('judul', width=200)
-        self.notes_tree.column('date', width=150)
+        self.notes_tree.column('tanggal', width=150)
         self.notes_tree.grid(row=0, column=0, columnspan=3, sticky=(tk.W, tk.E, tk.N, tk.S))
         self.notes_tree.bind('<<TreeviewSelect>>', self.on_note_select)
         
@@ -93,7 +93,7 @@ class NotebookGUI:
         ttk.Button(sort_frame, text="Urutkan: Judul", 
                   command=self.sort_by_judul).pack(side=tk.LEFT, padx=(0, 5))
         ttk.Button(sort_frame, text="Urutkan: Tanggal", 
-                  command=self.sort_by_date).pack(side=tk.LEFT, padx=5)
+                  command=self.sort_by_tanggal).pack(side=tk.LEFT, padx=5)
         ttk.Button(sort_frame, text="Cari Catatan", 
                   command=self.search_note).pack(side=tk.LEFT, padx=5)
         ttk.Button(sort_frame, text="Ekspor ke TXT", 
@@ -110,12 +110,12 @@ class NotebookGUI:
                                state='readonly', width=40)
         judul_entry.grid(row=0, column=1, sticky=(tk.W, tk.E), pady=(0, 5))
         
-        # Note date
-        self.note_date_var = tk.StringVar()
+        # Note tanggal
+        self.note_tanggal_var = tk.StringVar()
         ttk.Label(right_frame, text="Tanggal:").grid(row=1, column=0, sticky=tk.W)
-        date_entry = ttk.Entry(right_frame, textvariable=self.note_date_var, 
+        tanggal_entry = ttk.Entry(right_frame, textvariable=self.note_tanggal_var, 
                               state='readonly', width=40)
-        date_entry.grid(row=1, column=1, sticky=(tk.W, tk.E), pady=(0, 10))
+        tanggal_entry.grid(row=1, column=1, sticky=(tk.W, tk.E), pady=(0, 10))
         
         # Note content
         ttk.Label(right_frame, text="Konten:").grid(row=2, column=0, sticky=tk.W+tk.N)
@@ -157,7 +157,7 @@ class NotebookGUI:
         current = self.current_notebook.notes_list.head
         while current:
             note = current.data
-            self.notes_tree.insert('', tk.END, values=(note.judul, note.created_date))
+            self.notes_tree.insert('', tk.END, values=(note.judul, note.created_tanggal))
             current = current.next
     
     def on_notebook_select(self, event):
@@ -191,7 +191,7 @@ class NotebookGUI:
     def display_note(self, note):
         """Menampilkan isi catatan di panel kanan."""
         self.note_judul_var.set(note.judul)
-        self.note_date_var.set(note.created_date)
+        self.note_tanggal_var.set(note.created_tanggal)
         
         self.note_content.config(state='normal')
         self.note_content.delete(1.0, tk.END)
@@ -201,7 +201,7 @@ class NotebookGUI:
     def clear_note_display(self):
         """Membersihkan tampilan catatan."""
         self.note_judul_var.set("")
-        self.note_date_var.set("")
+        self.note_tanggal_var.set("")
         self.note_content.config(state='normal')
         self.note_content.delete(1.0, tk.END)
         self.note_content.config(state='disabled')
@@ -215,7 +215,7 @@ class NotebookGUI:
             else:
                 self.notebooks[name.lower()] = Notebook(name)
                 self.refresh_notebook_list()
-                self.save_data_to_json()
+                self.save_data_ke_json()
                 messagebox.showinfo("Sukses", f"Notebook '{name}' berhasil ditambahkan.")
     
     def delete_notebook(self):
@@ -239,7 +239,7 @@ class NotebookGUI:
             self.refresh_notebook_list()
             self.refresh_notes_list()
             self.clear_note_display()
-            self.save_data_to_json()
+            self.save_data_ke_json()
             messagebox.showinfo("Sukses", f"Notebook '{notebook_name}' berhasil dihapus.")
     
     def add_note(self):
@@ -263,7 +263,7 @@ class NotebookGUI:
             self.current_notebook.notes_list.appends(new_note)
             
             self.refresh_notes_list()
-            self.save_data_to_json()
+            self.save_data_ke_json()
             messagebox.showinfo("Sukses", f"Catatan '{judul}' berhasil ditambahkan.")
     
     def edit_note(self):
@@ -297,7 +297,7 @@ class NotebookGUI:
                     current.data.update_content(new_content)
                     
                     self.refresh_notes_list()
-                    self.save_data_to_json()
+                    self.save_data_ke_json()
                     messagebox.showinfo("Sukses", "Catatan berhasil diupdate.")
                 break
             current = current.next
@@ -318,7 +318,7 @@ class NotebookGUI:
             self.current_notebook.notes_list.delete_node_by_judul(note_judul)
             self.refresh_notes_list()
             self.clear_note_display()
-            self.save_data_to_json()
+            self.save_data_ke_json()
             messagebox.showinfo("Sukses", f"Catatan '{note_judul}' berhasil dihapus.")
     
     def sort_by_judul(self):
@@ -329,18 +329,18 @@ class NotebookGUI:
         
         self.current_notebook.sort_notes()
         self.refresh_notes_list()
-        self.save_data_to_json()
+        self.save_data_ke_json()
         messagebox.showinfo("Sukses", "Catatan berhasil diurutkan berdasarkan judul.")
     
-    def sort_by_date(self):
+    def sort_by_tanggal(self):
         """Mengurutkan catatan berdasarkan tanggal."""
         if not self.current_notebook:
             messagebox.showwarning("Peringatan", "Pilih notebook terlebih dahulu.")
             return
         
-        self.current_notebook.sort_notes_by_date()
+        self.current_notebook.sort_notes_by_tanggal()
         self.refresh_notes_list()
-        self.save_data_to_json()
+        self.save_data_ke_json()
         messagebox.showinfo("Sukses", "Catatan berhasil diurutkan berdasarkan tanggal.")
     
     def search_note(self):
@@ -376,7 +376,7 @@ class NotebookGUI:
         except Exception as e:
             messagebox.showerror("Error", f"Gagal mengekspor catatan: {str(e)}")
     
-    def save_data_to_json(self):
+    def save_data_ke_json(self):
         """Menyimpan data ke file JSON."""
         data_to_save = {}
         for name_key, notebook_obj in self.notebooks.items():
@@ -387,7 +387,7 @@ class NotebookGUI:
         except Exception as e:
             messagebox.showerror("Error", f"Gagal menyimpan data: {str(e)}")
     
-    def load_data_from_json(self):
+    def load_data_dari_json(self):
         """Memuat data dari file JSON."""
         try:
             with open(self.data_file, "r", encoding="utf-8") as f:
@@ -475,7 +475,7 @@ def main():
     
     # Handle window close
     def on_closing():
-        app.save_data_to_json()
+        app.save_data_ke_json()
         root.destroy()
     
     root.protocol("WM_DELETE_WINDOW", on_closing)
