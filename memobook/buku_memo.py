@@ -10,10 +10,10 @@ class Memobook:
 
     def add_memo(self):
         # Menambahkan memo baru ke dalam memobook.
-        title = input("Masukkan title memo: ")
-        # Periksa apakah title sudah ada untuk menghindari duplikasi
-        if self.memos_list.find_node_by_title(title):
-            print("Memo dengan title tersebut sudah ada. Gunakan title lain.")
+        judul = input("Masukkan judul memo: ")
+        # Periksa apakah judul sudah ada untuk menghindari duplikasi
+        if self.memos_list.cari_node_by_judul(judul):
+            print("Memo dengan judul tersebut sudah ada. Gunakan judul lain.")
             return
 
         print("Masukkan isi memo (tekan Enter dua kali untuk selesai):")
@@ -28,38 +28,38 @@ class Memobook:
                 full_content = line
                 first_line = False
             else:
-                full_content += "\n" + line
+                full_content += "\\n" + line
 
-        new_memo = Memo(title, full_content)  # Buat objek Memo baru
+        new_memo = Memo(judul, full_content)  # Buat objek Memo baru
         self.memos_list.appends(new_memo)  # Tambahkan Memo ke linked list
-        print(f"Memo '{title}' berhasil ditambahkan ke memobook '{self.name}'.")
+        print(f"Memo '{judul}' berhasil ditambahkan ke memobook '{self.name}'.")
 
     def view_memos(self):
         # Menampilkan semua memo yang ada di dalam memobook.
-        print(f"\n--- Memo di Memobook: {self.name} ---")
+        print(f"\\n--- Memo di Memobook: {self.name} ---")
         self.memos_list.display()  # Panggil metode display dari SinglyLinkedList
 
     def edit_memo(self):
-        # Mengedit title atau konten dari memo yang sudah ada.
-        title_to_edit = input("Masukkan title memo yang ingin diedit: ")
-        node_to_edit = self.memos_list.find_node_by_title(title_to_edit)
+        # Mengedit judul atau konten dari memo yang sudah ada.
+        judul_to_edit = input("Masukkan judul memo yang ingin diedit: ")
+        node_to_edit = self.memos_list.cari_node_by_judul(judul_to_edit)
 
         if node_to_edit:
             print("Memo ditemukan. Apa yang ingin Anda edit?")
-            print("1. title")
+            print("1. Judul")
             print("2. Konten")
             choice = input("Pilihan (1/2): ")
 
             if choice == '1':
-                # Edit title memo
-                new_title = input("Masukkan title baru: ")
-                # Periksa apakah title baru sudah digunakan oleh memo lain
-                ada_new_title = self.memos_list.find_node_by_title(new_title)
-                if ada_new_title and ada_new_title != node_to_edit:
-                    print("title baru sudah digunakan oleh memo lain. Gagal mengedit.")
+                # Edit judul memo
+                new_judul = input("Masukkan judul baru: ")
+                # Periksa apakah judul baru sudah digunakan oleh memo lain
+                ada_new_judul = self.memos_list.cari_node_by_judul(new_judul)
+                if ada_new_judul and ada_new_judul != node_to_edit:
+                    print("Judul baru sudah digunakan oleh memo lain. Gagal mengedit.")
                 else:
-                    node_to_edit.data.update_title(new_title)
-                    print("title memo berhasil diupdate.")
+                    node_to_edit.data.update_judul(new_judul)
+                    print("Judul memo berhasil diupdate.")
             elif choice == '2':
                 # Edit konten memo
                 print("Masukkan konten baru (tekan Enter dua kali untuk selesai):")
@@ -73,31 +73,31 @@ class Memobook:
                         new_content = line
                         first_line = False
                     else:
-                        new_content += "\n" + line
+                        new_content += "\\n" + line
                 node_to_edit.data.update_content(new_content)
                 print("Konten memo berhasil diupdate.")
             else:
                 print("Pilihan tidak valid.")
         else:
-            print(f"Memo '{title_to_edit}' tidak ditemukan.")
+            print(f"Memo '{judul_to_edit}' tidak ditemukan.")
 
     def delete_memo(self):
-        # Menghapus memo dari memobook berdasarkan title.
-        title_to_delete = input("Masukkan title memo yang ingin dihapus: ")
-        self.memos_list.delete_node_by_title(title_to_delete)  # Panggil metode delete dari SinglyLinkedList
+        # Menghapus memo dari memobook berdasarkan judul.
+        judul_to_delete = input("Masukkan judul memo yang ingin dihapus: ")
+        self.memos_list.delete_node_by_judul(judul_to_delete)  # Panggil metode delete dari SinglyLinkedList
 
     def sort_memos(self):
-        # Mengurutkan memo dalam memobook berdasarkan title (A-Z).
-        self.memos_list.insertion_sort_by_title()
+        # Mengurutkan memo dalam memobook berdasarkan judul (A-Z).
+        self.memos_list.insertion_sort_by_judul()
 
-    def sort_memos_by_date(self):
+    def sort_memos_by_tanggal(self):
         """Mengurutkan memo berdasarkan tanggal pembuatan (dari yang terlama ke terbaru)."""
         self.memos_list.insertion_sort_by_tanggal()
 
     def search_memo(self):
-        # Mencari memo dalam memobook berdasarkan title.
-        title_to_search = input("Masukkan title memo yang ingin dicari: ")
-        self.memos_list.linear_search_by_title(title_to_search)  # Panggil metode search dari SinglyLinkedList
+        # Mencari memo dalam memobook berdasarkan judul.
+        judul_to_search = input("Masukkan judul memo yang ingin dicari: ")
+        self.memos_list.linear_search_by_judul(judul_to_search)  # Panggil metode search dari SinglyLinkedList
 
     def to_dict(self):
         # Mengkonversi objek Memobook (termasuk semua memonya) menjadi dictionary.
@@ -109,7 +109,7 @@ class Memobook:
 
     @staticmethod
     def from_dict(data):
-        "Membuat objek Memobook dari dictionary (data dari JSON)."
+        """Membuat objek Memobook dari dictionary (data dari JSON)."""
         memobook = Memobook(data["name"])  # Buat instance Memobook baru
         # Muat memo dari list of dictionaries ke dalam SinglyLinkedList milik memobook
         memobook.memos_list.load_from_list_of_dicts(data["memos"])
@@ -134,7 +134,7 @@ class Memobook:
                 # Iterasi melalui semua memo dan tulis ke file
                 while current:
                     f.write(f"--- Memo {memo_count} ---\n")
-                    f.write(f"title: {current.data.title}\n")
+                    f.write(f"Judul: {current.data.judul}\n")
                     f.write(f"Tanggal: {current.data.created_tanggal}\n")  # Menambahkan tanggal ke ekspor
                     f.write("Konten:\n")
                     f.write(current.data.content)

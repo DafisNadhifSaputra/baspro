@@ -1,10 +1,10 @@
 from datetime import datetime
 
 class Memo:
-    """Mewakili satu memo dengan title, konten, dan tanggal pembuatan."""
-    def __init__(self, title, content, created_tanggal=None):
-        # Inisialisasi objek Memo dengan title, konten, dan tanggal pembuatan.
-        self.title = title  # title memo
+    """Mewakili satu memo dengan judul, konten, dan tanggal pembuatan."""
+    def __init__(self, judul, content, created_tanggal=None):
+        # Inisialisasi objek Memo dengan judul, konten, dan tanggal pembuatan.
+        self.judul = judul  # Judul memo
         self.content = content  # Isi atau konten memo
         
         # Jika tanggal pembuatan (created_tanggal) disediakan, gunakan itu.
@@ -17,23 +17,23 @@ class Memo:
 
     def __str__(self):
         # Representasi string dari objek Memo, berguna untuk pencetakan.
-        return f"title: {self.title}\nTanggal: {self.created_tanggal}\nKonten:\n{self.content}\n"
+        return f"Judul: {self.judul}\nTanggal: {self.created_tanggal}\nKonten:\n{self.content}\n"
 
     def update_content(self, new_content):
         # Memperbarui konten memo.
         self.content = new_content
         # Bisa ditambahkan logika untuk memperbarui tanggal modifikasi jika perlu
 
-    def update_title(self, new_title):
-        # Memperbarui title memo.
-        self.title = new_title
+    def update_judul(self, new_judul):
+        # Memperbarui judul memo.
+        self.judul = new_judul
         # Bisa ditambahkan logika untuk memperbarui tanggal modifikasi jika perlu
 
     def to_dict(self):
         # Mengkonversi objek Memo menjadi dictionary.
         # Berguna untuk menyimpan data Memo ke format JSON.
         return {
-            "title": self.title,
+            "judul": self.judul,
             "content": self.content,
             "created_tanggal": self.created_tanggal
         }
@@ -44,4 +44,4 @@ class Memo:
         # Mengambil 'created_tanggal' dari dictionary, default ke None jika tidak ada.
         created_tanggal = data.get("created_tanggal", None)
         # Membuat dan mengembalikan instance Memo baru.
-        return Memo(data["title"], data["content"], created_tanggal)
+        return Memo(data["judul"], data["content"], created_tanggal)

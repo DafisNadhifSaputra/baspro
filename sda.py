@@ -1,7 +1,7 @@
+from memobook import Memobook
 import json
 import os
-from datetime import datetime
-from memobook import Memobook
+from struktur_data import SinglyLinkedList, Node
 
 class MemobookApplication:
     def __init__(self, data_file="memobook_data.json"):
@@ -126,9 +126,9 @@ class MemobookApplication:
             print("2. Lihat Semua Memo")
             print("3. Edit Memo")
             print("4. Hapus Memo")
-            print("5. Urutkan Memo (Berdasarkan title)")
+            print("5. Urutkan Memo (Berdasarkan Judul)")
             print("6. Urutkan Memo (Berdasarkan Tanggal)")
-            print("7. Cari Memo (Berdasarkan title)")
+            print("7. Cari Memo (Berdasarkan Judul)")
             print("8. Ekspor Memo ke File Teks (.txt)")
             print("9. Kembali ke Menu Utama")
             choice = input("Pilihan: ")
@@ -146,7 +146,7 @@ class MemobookApplication:
                 current_memobook.delete_memo()
                 self.save_data_ke_json() # Simpan setelah menghapus memo
             elif choice == '5':
-                current_memobook.sort_memos() # Urutkan berdasarkan title
+                current_memobook.sort_memos() # Urutkan berdasarkan judul
                 self.save_data_ke_json() # Simpan setelah mengurutkan
             elif choice == '6':
                 if current_memobook:
