@@ -16,17 +16,17 @@ class MemobookGUI:
         self.data_file = "memobook_data.json"
         self.current_memobook = None
         
-        # Load data
+        # Muat data
         self.load_data_dari_json()
         if not self.memobooks:
             self._inisialisasi_default_memobooks()
         
-        # Create GUI
+        # Buat GUI
         self.buat_widget()
         self.perbarui_daftar_memobook()
     
     def _inisialisasi_default_memobooks(self):
-        """Inisialisasi notebook default jika belum ada."""
+        """Inisialisasi memobook default jika belum ada."""
         default_subjects = ["Aljabar Abstrak", "Persamaan Diferensial", "Analisis Real", "Struktur Data dan Algoritma"]
         for subject in default_subjects:
             if subject.lower() not in self.memobooks:
@@ -35,7 +35,7 @@ class MemobookGUI:
     
     def buat_widget(self):
         """Membuat semua widget GUI."""
-        # Main frame
+        # Frame utama
         main_frame = ttk.Frame(self.root, padding="10")
         main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         self.root.grid_rowconfigure(0, weight=1)
@@ -46,22 +46,22 @@ class MemobookGUI:
                                font=('Arial', 16, 'bold'))
         title_label.grid(row=0, column=0, columnspan=3, pady=(0, 20))
         
-        # Left panel - Notebook list
+        # Panel kiri - Daftar Memobook
         left_frame = ttk.LabelFrame(main_frame, text="Daftar Memobook", padding="10")
         left_frame.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S), padx=(0, 10))
         
-        # Notebook listbox
+        # Listbox memobook
         self.memobook_listbox = tk.Listbox(left_frame, height=15, width=25)
         self.memobook_listbox.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S))
         self.memobook_listbox.bind('<<ListboxSelect>>', self.saat_memobook_dipilih)
         
-        # Notebook buttons
+        # Tombol memobook
         ttk.Button(left_frame, text="Tambah Memobook", 
                   command=self.tambah_memobook).grid(row=1, column=0, pady=(10, 5), sticky=tk.W+tk.E)
         ttk.Button(left_frame, text="Hapus Memobook", 
                   command=self.hapus_memobook).grid(row=1, column=1, pady=(10, 5), sticky=tk.W+tk.E)
         
-        # Middle panel - Notes list
+        # Panel tengah - Daftar Memo
         middle_frame = ttk.LabelFrame(main_frame, text="Daftar Memo", padding="10")
         middle_frame.grid(row=1, column=1, sticky=(tk.W, tk.E, tk.N, tk.S), padx=5)
         
@@ -75,18 +75,18 @@ class MemobookGUI:
         self.memos_tree.grid(row=0, column=0, columnspan=3, sticky=(tk.W, tk.E, tk.N, tk.S))
         self.memos_tree.bind('<<TreeviewSelect>>', self.saat_memo_dipilih)
         
-        # Notes buttons
-        notes_button_frame = ttk.Frame(middle_frame)
-        notes_button_frame.grid(row=1, column=0, columnspan=3, pady=(10, 0), sticky=tk.W+tk.E)
+        # Tombol memo
+        memo_button_frame = ttk.Frame(middle_frame)
+        memo_button_frame.grid(row=1, column=0, columnspan=3, pady=(10, 0), sticky=tk.W+tk.E)
         
-        ttk.Button(notes_button_frame, text="Tambah Memo", 
+        ttk.Button(memo_button_frame, text="Tambah Memo", 
                   command=self.tambah_memo).pack(side=tk.LEFT, padx=(0, 5))
-        ttk.Button(notes_button_frame, text="Edit Memo", 
+        ttk.Button(memo_button_frame, text="Edit Memo", 
                   command=self.edit_memo).pack(side=tk.LEFT, padx=5)
-        ttk.Button(notes_button_frame, text="Hapus Memo", 
+        ttk.Button(memo_button_frame, text="Hapus Memo", 
                   command=self.hapus_memo).pack(side=tk.LEFT, padx=5)
         
-        # Sort buttons
+        # Tombol Sort
         sort_frame = ttk.Frame(middle_frame)
         sort_frame.grid(row=2, column=0, columnspan=3, pady=(5, 0), sticky=tk.W+tk.E)
         
@@ -99,7 +99,7 @@ class MemobookGUI:
         ttk.Button(sort_frame, text="Ekspor ke TXT", 
                   command=self.ekspor_memo).pack(side=tk.LEFT, padx=5)
         
-        # Right panel - Note content
+        # Panel kanan - Konten Memo
         right_frame = ttk.LabelFrame(main_frame, text="Isi Memo", padding="10")
         right_frame.grid(row=1, column=2, sticky=(tk.W, tk.E, tk.N, tk.S), padx=(10, 0))
         
@@ -123,7 +123,7 @@ class MemobookGUI:
                                                      state='disabled', wrap=tk.WORD)
         self.note_content.grid(row=2, column=1, sticky=(tk.W, tk.E, tk.N, tk.S), pady=(0, 10))
         
-        # Configure grid weights
+        # Konfigurasi bobot grid
         main_frame.grid_rowconfigure(1, weight=1)
         main_frame.grid_columnconfigure(1, weight=1)
         main_frame.grid_columnconfigure(2, weight=1)
@@ -139,14 +139,14 @@ class MemobookGUI:
         right_frame.grid_columnconfigure(1, weight=1)
     
     def perbarui_daftar_memobook(self):
-        """Memperbarui daftar notebook di listbox."""
+        """Memperbarui daftar memobook di listbox."""
         self.memobook_listbox.delete(0, tk.END)
-        for notebook in self.memobooks.values():
-            self.memobook_listbox.insert(tk.END, notebook.name)
+        for memobook in self.memobooks.values():
+            self.memobook_listbox.insert(tk.END, memobook.name)
     
     def perbarui_daftar_memo(self):
         """Memperbarui daftar memo di treeview."""
-        # Clear existing items
+        # Hapus item yang sudah ada
         for item in self.memos_tree.get_children():
             self.memos_tree.delete(item)
         
@@ -166,9 +166,9 @@ class MemobookGUI:
         if selection:
             memobook_name = self.memobook_listbox.get(selection[0])
             # Cari memobook berdasarkan nama
-            for notebook in self.memobooks.values():
-                if notebook.name == memobook_name:
-                    self.current_memobook = notebook
+            for memobook in self.memobooks.values():
+                if memobook.name == memobook_name:
+                    self.current_memobook = memobook
                     break
             self.perbarui_daftar_memo()
             self.bersihkan_tampilan_memo()
@@ -230,8 +230,8 @@ class MemobookGUI:
                                    f"Apakah Anda yakin ingin menghapus memobook '{memobook_name}'?")
         if result:
             # Cari dan hapus memobook
-            for key, notebook in list(self.memobooks.items()):
-                if notebook.name == memobook_name:
+            for key, memobook in list(self.memobooks.items()):
+                if memobook.name == memobook_name:
                     del self.memobooks[key]
                     break
             
@@ -392,8 +392,8 @@ class MemobookGUI:
             with open(self.data_file, "r", encoding="utf-8") as f:
                 loaded_data = json.load(f)
                 self.memobooks = {}
-                for name_key, notebook_data_dict in loaded_data.items():
-                    self.memobooks[name_key] = Memobook.from_dict(notebook_data_dict)
+                for name_key, memobook_data_dict in loaded_data.items():
+                    self.memobooks[name_key] = Memobook.from_dict(memobook_data_dict)
         except FileNotFoundError:
             self.memobooks = {}
         except json.JSONDecodeError:
